@@ -1,29 +1,26 @@
 # Poisson Trade Arrival Model
 
-Modelling the number of BTC/USDT trades per second on Binance 
-and testing whether arrivals follow a Poisson distribution.
+I'm currently studying Poisson distributions in my stats class and wanted to 
+apply the theory to something I'm actually interested in being financial markets.
 
-## What I did
-- Fetched 1000 recent trades from the Binance public API
-- Binned trades into 1-second windows
-- Estimated lambda (average trades per window)
-- Compared empirical distribution to theoretical Poisson PMF
-- Ran a chi-square goodness-of-fit test
+The idea is simple: if trades arrive randomly and independently, the number 
+of trades in a fixed time window should follow a Poisson distribution. 
+I'm testing that assumption on live BTC/USDT data from Binance.
 
-## Results
-- Lambda: ~28 trades/second
-- Variance-to-mean ratio: ~100 (Poisson assumes this equals 1)
-- Chi-square p-value: ~0
+## What the notebook covers
 
-The Poisson model is a poor fit. Trades are heavily clustered —
-quiet periods punctuated by sudden bursts of activity. This 
-violates the Poisson assumption of independent, constant-rate arrivals.
+Fetching live trade data from the Binance public API, binning trades into 
+1-second windows, estimating lambda, and comparing the empirical distribution 
+to the theoretical Poisson PMF.
 
-## Why it fails
-BTC/USDT is one of the most liquid pairs on earth. Large orders, 
-price movements, and algorithmic reactions cause trades to arrive 
-in bursts rather than smoothly. A Hawkes process or Negative 
-Binomial model would be a better fit.
+## What I found
+
+The Poisson model doesn't fit well. The variance-to-mean ratio is way above 1, 
+and the plots make it obvious — most seconds are quiet but every so often 
+there's a burst of hundreds of trades. Trades on a liquid exchange aren't 
+independent random events, they react to price moves and large orders hitting 
+the book.
 
 ## Stack
+
 Python, pandas, numpy, scipy, matplotlib, Binance public API
